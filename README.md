@@ -6,7 +6,7 @@ Clonez le repo sur votre machine. Vous retrouverez notamment dans ce repo le fic
 
 Vous pouvez répondre aux questions en modifiant directement votre clone du README.md ou avec un fichier pdf que vous pourrez uploader sur votre fork.
 
-**Le rendu consiste simplement à compléter toutes les parties marquées avec la mention "LIVRABLE". Le rendu doit se faire par une "pull request". Envoyer également le hash du dernier commit et votre username GitHub par email au professeur et à l'assistant**
+**Le rendu consiste simplement à répondre à toutes les questions clairement identifiées dans le text avec la mention "Question". Le rendu doit se faire par une "pull request". Envoyer également le hash du dernier commit et votre username GitHub par email au professeur et à l'assistant**
 
 ## Table de matières
 
@@ -14,6 +14,7 @@ Vous pouvez répondre aux questions en modifiant directement votre clone du READ
 
 [Echéance](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Labo-Firewall#echéance)
 
+[Travail à effectuer](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Labo-Firewall#echéance)
 
 ## Introduction
 
@@ -33,7 +34,7 @@ Par exemple, pour une petite entreprise avec un accès Internet avec un modem si
 
 ## Echéance 
 
-Ce travail devra être rendu le dimanche après la fin de la 2ème séance de laboratoire, soit au plus tard, **le 31 mars 2019, à 23h.**
+Ce travail devra être rendu le dimanche après la fin de la 2ème séance de laboratoire, soit au plus tard, **le 7 avril 2019, à 23h.**
 
 
 ## Ecriture de règles
@@ -82,12 +83,12 @@ La clé "content" apparait deux fois parce que les deux strings qui doivent êtr
 
 Les éléments dans les options d'une règle sont traitées comme un AND logique. La liste complète de règles sont traitées comme une succession de OR.
 
-## Informations de base pour le rèbles
+## Informations de base pour le règles
 
 ### Actions :
 
 ```
-alert tcp any any -> any any (msg:"My Name!"; content:"Skon";sid:1000001;rev:1;)
+alert tcp any any -> any any (msg:"My Name!"; content:"Skon"; sid:1000001; rev:1;)
 ```
 
 L'entête contient l'information qui décrit le "qui", le "où" et le "quoi" du paquet. Ça décrit aussi ce qui doit arriver quand un paquet correspond à tous contenus dans la règle.
@@ -176,7 +177,7 @@ Réaliser des captures d'écran des exercices suivants et les ajouter à vos ré
 
 Considérer la règle simple suivante:
 
-alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein";sid:1000001;rev:1;)
+alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:1000001; rev:1;)
 
 **Question 1: Qu'est-ce qu'elle fait la règle et comment ça fonctionne ?**
 
@@ -185,6 +186,9 @@ Utiliser un éditeur et créer un fichier `myrules.rules` sur votre répertoire 
 ```
 sudo snort -c myrules.rules -i eth0
 ```
+
+**ATTENTION : si vous surveillez la même machine depuis laquelle vous faites tourner Snort, il faudra rajouter l'option `-k none`en ligne de commande.**
+
 
 **Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça vaut dire ? **
 
