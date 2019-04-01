@@ -10,11 +10,19 @@ Vous pouvez répondre aux questions en modifiant directement votre clone du READ
 
 ## Table de matières
 
-[Introduction](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Labo-Firewall#introduction)
+[Introduction](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Laboratoire-IDS#introduction)
 
-[Echéance](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Labo-Firewall#echéance)
+[Echéance](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Laboratoire-IDS#echéance)
 
-[Travail à effectuer](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Labo-Firewall#echéance)
+[Ecriture de règles](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Laboratoire-IDS#ecriture-de-règles)
+
+[Travail à effectuer](https://github.com/arubinst/Teaching-HEIGVD-SRX-2019-Laboratoire-IDS#exercises)
+
+
+## Echéance 
+
+Ce travail devra être rendu le dimanche après la fin de la 2ème séance de laboratoire, soit au plus tard, **le 7 avril 2019, à 23h.**
+
 
 ## Introduction
 
@@ -32,9 +40,83 @@ Snort peut être exécuté comme un logiciel indépendant sur une machine ou com
 
 Par exemple, pour une petite entreprise avec un accès Internet avec un modem simple et un switch interconnectant une dizaine d'ordinateurs de bureau, il faudra utiliser une nouvelle machine executant Snort et placée entre le modem et le switch. 
 
-## Echéance 
 
-Ce travail devra être rendu le dimanche après la fin de la 2ème séance de laboratoire, soit au plus tard, **le 7 avril 2019, à 23h.**
+## Matériel
+
+Vous avez besoin de votre ordinateur avec VirtualBox et une VM Kali Linux. Vous trouverez un fichier OVA pour la dernière version de Kali sur `eistore` si vous en avez besoin.
+
+
+## Configuration du réseau sur VirtualBox
+
+Votre VM fonctionnera comme IDS pour "protéger" votre machine hôte (par exemple, si vous faites tourner VirtualBox sur une machine Windows, Snort sera utilisé pour capturer le trafic de Windows vers l'Internet).
+
+Pour cela, il faudra configurer une réseau de la VM en mode "bridge" et activer l'option "Promiscuous Mode" dans les paramètres avancés de l'interface. Le mode bridge dans l'école ne vous permet d'accéder à l'Internet depuis votre VM. Vous pouvez donc rajouter une deuxième interface réseau configurée comme NAT.
+
+Pour les captures avec Snort, assurez-vous d'indiquer la bonne interface dans la ligne de commandes.
+
+
+## Installation de Snort sur Linux
+
+On va installer Snort sur Kali Linux. 
+
+La manière la plus simple c'est de l'installer en ligne de commande. Il suffit d'utiliser la commande suivante :
+
+```
+sudo apt update && apt install snort
+```
+
+Ceci télécharge et installe la version la plus récente de Snort.
+
+Vers la fin de l'installation, on vous demande de fournir l'adresse de votre réseau HOME. Il s'agit du réseau que vous voulez protéger. Pour ce laboratoire, vous pouvez donner n'importe quelle adresse comme réponse.
+
+
+## Essayer Snort
+
+Une fois installé, vous pouvez lancer Snort comme un simple "sniffer". Pourtant, ceci capture tous les paquets, ce qui peut produire des fichiers de capture énormes. Il est beaucoup plus intéressant d'utiliser des règles pour définir quel type de trafic est intéressant et laisser Snort ignorer le reste.
+
+Snort se comporte de différentes manières en fonction des options que vous passez en ligne de commande au démarrage. Vous pouvez voir la grande liste d'options avec la commande suivante :
+
+```
+snort --help
+```
+
+On va commencer par observer tout simplement les entêtes des paquets IP utilisant la commande :
+
+```
+snort -v -i eth0
+```
+
+**ATTENTION : assurez-vous de bien choisir l'interface qui se trouve en mode bridge/promiscuous.**
+
+Snort s'execute donc et montre sur l'écran tous les entêtes des paquets IP qui traversent l'interface eth0. Cette interface est connectée à votre interface réseau de votre machine hôte à travers le bridge.
+
+Pour arrêter Snort, il suffit d'utiliser `CTRL-C`.
+
+## Utilisation comme un IDS
+
+Pour enregistrer seulement les alertes et pas tout le trafic, on execute Snort en mode IDS. Il faudra donc spécifier un fichier contenant des règles. 
+
+Il faut noter que `/etc/snort/snort.config` contient déjà des références à tous les fichiers de règles disponibles avec l'installation par défaut. Si on veut tester Snort avec des règles simples, on peut créer un fichier de config personnalisé (par exemple `mysnort.conf`) et importer un seul fichier de règles utilisant la directive "include".
+
+Les fichiers de règles sont normalement stockes dans le repertoire `/etc/snort/rules/`.
+
+Par exemple, créez un fichier de config `mysnort.conf` dans le repertoire `/etc/snort` avec le contenu suivant :
+
+```
+include /etc/snort/rules/icmp2.rules
+```
+
+Ensuite, créez le fichier de règles `icmp2.rules` dans le repertoire `/etc/snort/rules/` et rajoutez le contenu suivant :
+
+`alert icmp any any -> any any (msg:"ICMP Packet"; sid:4000001; rev:3;)`
+
+On peut maintenant executer la commande :
+
+```
+snort -c /etc/snort/mysnort.conf
+```
+
+Vous pouvez maintenant faire quelques pings depuis votre hôte et regarder les résultas dans le fichier d'alertes contenu dans le repertoire `/var/log/snort/`. 
 
 
 ## Ecriture de règles
@@ -158,16 +240,24 @@ log 192.168.1.0/24 any <> 192.168.1.0/24 23
 
 Si Snort détecte un paquet qui correspond à une règle, il envoie un message d'alerte ou il journalise le message. Les alertes peuvent être envoyées au syslog, journalisées dans un fichier text d'alertes ou affichées directement à l'écran.
 
-To put this into perspective, let’s examine the logging and alerting areas of a system. For this discussion, the system sends alerts to the syslog facility and the offending network packet(s) to an IP-based directory structure. All alerts are logged via syslog to a file called "alerts" in the file /var/adm/snort/alerts. Any alerting message found in this file will have corresponding offending network packets logged in the same directory as the alert file but under the IP address of the source packet.
+Le système envoie **les alertes vers le syslog** et **les paquets "offensifs" vers une structure de repertoires**.
 
-Using the rule in Figure 1, from above:
+Les alertes sont journalisées via syslog dans le fichier `/var/log/snort/alerts`. Toute alerte se trouvant dans ce fichier aura sont paquet correspondant dans le même repertoire, mais sous le fichier snort.log.xxxxxxxxxx où xxxxxxxxxx est l'heure Unix du commencement du journal.
 
+Avec la règle suivante :
+
+```
 alert tcp any any -> 192.168.1.0/24 111
 (content:"|00 01 86 a5|"; msg: "mountd access";)
+```
 
-When Snort inspects and matches the above rule to an offending network packet(s), an alerting message is sent to syslog stating that a "mountd access" violation has occurred. This message is recorded in the file /var/adm/snort/alerts and the actual network packet(s) causing the alert is recorded in a file based on the source IP address of the offending packet(s), (i.e. /var/adm/snort/a.b.c.d).
+un message d'alerte est envoyé à syslog avec l'information "mountd access". Ce message est enregistré dans /var/log/snort/alerts et le vrai paquet responsable de l'alerte se trouvera dans un fichier dont le nom reproduit l'adresse IP source (/var/log/snort/snort.log.xxxxxxxxxx).
 
-Some problems may occur when filtering log entries into an IP-named file. For one, multiple alerts may involve one IP address. Under this condition, the offending packets violating each unique rule are sent to the same IP-named file; and mapping the specific alert to the offending packet(s) then demands a search and locate approach that could be time consuming.
+Les fichiers log sont des fichiers binaires enregistrés en format pcap. Vous pouvez les ouvrir avec Wireshark ou les diriger directement sur la console avec la commande suivante :
+
+```
+tcpdump -r /var/log/snort/snort.log.xxxxxxxxxx
+```
 
 ## Exercises
 
@@ -181,20 +271,17 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:1000001;
 
 **Question 1: Qu'est-ce qu'elle fait la règle et comment ça fonctionne ?**
 
-Utiliser un éditeur et créer un fichier `myrules.rules` sur votre répertoire home. Rajouter une règle comme celle montrée avant avec votre nom. Lancer snort avec la commande suivante :
+Utiliser un éditeur et créer un fichier `myrules.rules` sur votre répertoire home. Rajouter une règle comme celle montrée avant mais avec votre nom ou un mot clé de votre préférence. Lancer snort avec la commande suivante :
 
 ```
 sudo snort -c myrules.rules -i eth0
 ```
 
-**ATTENTION : si vous surveillez la même machine depuis laquelle vous faites tourner Snort, il faudra rajouter l'option `-k none`en ligne de commande.**
+**Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça vaut dire ?**
 
+Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi dans son text (il faudra chercher un peu pour trouver un site en http...). Ensuite, arrêter Snort avec `Control-C`.
 
-**Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça vaut dire ? **
-
-Aller à un site web contenant votre nom dans son text (il faudra chercher un peu pour trouver un site en http...). Ensuite, arrêter Snort avec `Control-C`.
-
-**Question 3: Que voyez-vous ? **
+**Question 3: Que voyez-vous ?**
 
 Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il a des alertes pour votre nom.
 
@@ -216,11 +303,6 @@ Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping d
 
 ### Detecter une tentative de login SSH
 
-Activer SSH pour votre système.
+Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été faite depuis la machine d'un voisin. Si vous avez besoin de plus d'information sur ce qui décrit cette tentative (adresses, ports, protocoles), servez-vous de Wireshark pour analyser les échanges lors de la requête de connexion depuis votre voisi.
 
-Vérifier que vous arrivez à vous connecter depuis un voisin.
-
-Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été faite. Si vous avez besoin de plus d'information, servez-vous par exemple de Wireshark pour analyser les échange lors de la tentative de connexion. 
-
-**Question 7: Quelle est votre règle ? Montrer la règle et expliquer comment elle fonctionne. Montre le message d'alerte enregistré dans le fichier d'alertes.
-**
+**Question 7: Quelle est votre règle ? Montrer la règle et expliquer comment elle fonctionne. Montre le message d'alerte enregistré dans le fichier d'alertes.**
