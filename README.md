@@ -298,7 +298,7 @@ Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi 
 
 **Question 3: Que voyez-vous ?**
 
-Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il a des alertes pour votre nom.
+Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il y ait des alertes pour votre nom.
 
 **Question 4: A quoi ressemble l'alerte ? Qu'est-ce que chaque champ veut dire ?**
 
