@@ -60,6 +60,8 @@ Pour cela, il faudra configurer une réseau de la VM en mode "bridge" et activer
 
 Pour les captures avec Snort, assurez-vous d'indiquer la bonne interface dans la ligne de commandes.
 
+![Topologie du réseau virtualisé](images/Snort_Kali.png)
+
 
 ## Installation de Snort sur Linux
 
@@ -318,3 +320,5 @@ Modifier votre règle pour que les pings soient détectés dans les deux senses.
 Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été faite depuis la machine d'un voisin. Si vous avez besoin de plus d'information sur ce qui décrit cette tentative (adresses, ports, protocoles), servez-vous de Wireshark pour analyser les échanges lors de la requête de connexion depuis votre voisi.
 
 **Question 8: Quelle est votre règle ? Montrer la règle et expliquer comment elle fonctionne. Montre le message d'alerte enregistré dans le fichier d'alertes.**
+
+<sub>This guide draws heavily on http://cs.mvnu.edu/twiki/bin/view/Main/CisLab82014</sub>
