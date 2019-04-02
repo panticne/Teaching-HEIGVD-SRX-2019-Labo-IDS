@@ -286,6 +286,12 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:4000015;
 
 **Question 1: Qu'est-ce qu'elle fait la règle et comment ça fonctionne ?**
 
+---
+
+**Reponse :**  
+
+---
+
 Utiliser un éditeur et créer un fichier `myrules.rules` sur votre répertoire home. Rajouter une règle comme celle montrée avant mais avec votre nom ou un mot clé de votre préférence. Lancer snort avec la commande suivante :
 
 ```
@@ -294,13 +300,32 @@ sudo snort -c myrules.rules -i eth0
 
 **Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça vaut dire ?**
 
+---
+
+**Reponse :**  
+
+---
+
 Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi dans son text (il faudra chercher un peu pour trouver un site en http...). Ensuite, arrêter Snort avec `CTRL-C`.
 
 **Question 3: Que voyez-vous ?**
 
+---
+
+**Reponse :**  
+
+---
+
 Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il y ait des alertes pour votre nom.
 
 **Question 4: A quoi ressemble l'alerte ? Qu'est-ce que chaque champ veut dire ?**
+
+---
+
+**Reponse :**  
+
+---
+
 
 --
 
@@ -310,6 +335,12 @@ Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wi
 
 **Question 5: Quelle est votre règle ? Où le message a-t'il été journalisé ? Qu'est-ce qui a été journalisé ?**
 
+---
+
+**Reponse :**  
+
+---
+
 --
 
 ### Detecter un ping d'un autre système
@@ -317,6 +348,12 @@ Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wi
 Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping depuis une autre machine. Assurez-vous que **ça n'alerte pas** quand c'est vous qui envoyez le ping vers un autre système !
 
 **Question 6: Quelle est votre règle ? Comment avez-vous fait pour que ça identifie seulement les pings entrants ? Où le message a-t'il été journalisé ? Qu'est-ce qui a été journalisé ?**
+
+---
+
+**Reponse :**  
+
+---
 
 --
 
@@ -326,6 +363,13 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 
 **Question 7: Qu'est-ce que vous avez modifié pour que la règle détecte maintenant le trafic dans les deux senses ?**
 
+---
+
+**Reponse :**  
+
+---
+
+
 --
 
 ### Detecter une tentative de login SSH
@@ -333,6 +377,12 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été faite depuis la machine d'un voisin. Si vous avez besoin de plus d'information sur ce qui décrit cette tentative (adresses, ports, protocoles), servez-vous de Wireshark pour analyser les échanges lors de la requête de connexion depuis votre voisi.
 
 **Question 8: Quelle est votre règle ? Montrer la règle et expliquer comment elle fonctionne. Montre le message d'alerte enregistré dans le fichier d'alertes.**
+
+---
+
+**Reponse :**  
+
+---
 
 --
 
@@ -342,8 +392,20 @@ Lancer Wireshark et faire une capture du trafic sur l'interface connectée au br
 
 **Question 9: Quelle est l'option de Snort qui permet d'analyser un fichier pcap ou un fichier log ?**
 
+---
+
+**Reponse :**  
+
+---
+
 Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshark.
 
 **Question 10: Quelle est le comportement de Snort avec un fichier de capture ? Y-a-t'il une difference par rapport à l'analyse en temps réel ? Est-ce que des alertes sont aussi enregistrées dans le fichier d'alertes?**
+
+---
+
+**Reponse :**  
+
+---
 
 <sub>This guide draws heavily on http://cs.mvnu.edu/twiki/bin/view/Main/CisLab82014</sub>
