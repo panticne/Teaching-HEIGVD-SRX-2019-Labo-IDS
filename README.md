@@ -49,7 +49,7 @@ Par exemple, pour une petite entreprise avec un accès Internet avec un modem si
 
 ## Matériel
 
-Vous avez besoin de votre ordinateur avec VirtualBox et une VM Kali Linux. Vous trouverez un fichier OVA pour la dernière version de Kali sur `eistore` si vous en avez besoin.
+Vous avez besoin de votre ordinateur avec VirtualBox et une VM Kali Linux. Vous trouverez un fichier OVA pour la dernière version de Kali sur `//eistore1/cours/iict/Laboratoires/SRX/Kali` si vous en avez besoin.
 
 
 ## Configuration du réseau sur VirtualBox
