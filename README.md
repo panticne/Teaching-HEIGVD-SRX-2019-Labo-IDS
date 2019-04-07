@@ -289,7 +289,7 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:4000015;
 ---
 
 **Reponse :**  
-
+On va écrire l'alerte lorsque nous allons recevoir un paquet TCP venant de n'importe quelle source vers n'importe laquelle de nos destinations contenant le texte : "Rubinstein". Nous allons stocker "Mon nom!". La règle est identifiée par le sid donné dans la commande avec comme version rev : 1.
 ---
 
 Utiliser un éditeur et créer un fichier `myrules.rules` sur votre répertoire home. Rajouter une règle comme celle montrée avant mais avec votre nom ou un mot clé de votre préférence. Lancer snort avec la commande suivante :
@@ -303,7 +303,7 @@ sudo snort -c myrules.rules -i eth0
 ---
 
 **Reponse :**  
-
+Lorsque nous lançons le logiciel nous voyons différentes informations concernant l'initialisation de snort, notamment le nombre de rules à charger, les options de lancement de la commande , sur quel port c'est lancé ainsi que la version de différentes librairie utilisée par snort. 
 ---
 
 Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi dans son text (il faudra chercher un peu pour trouver un site en http...). Ensuite, arrêter Snort avec `CTRL-C`.
@@ -313,7 +313,7 @@ Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi 
 ---
 
 **Reponse :**  
-
+Nous voyons différentes informations sur le site, notamment son hôte, le user-agent, l'encoding, le language, on y voit aussi les cookies et les différentes requêtes du site.
 ---
 
 Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il y ait des alertes pour votre nom.
@@ -323,7 +323,7 @@ Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il 
 ---
 
 **Reponse :**  
-
+Elle ressemble à des informations sur un paquet.On a sur la première ligne entre crochet les id:version de notre règle, suivi du message. La priorité du paquet, suivi de la date/heure de l'alerte avec l'adresse IP de l'hôte vers la destination(site web). TCP TTL indique le temps de vie du paquet tcp. TOS indique le type de service. IpLen indique la longueur de l'en-tête IP. DgmLen quant a lui indique la longueur de l'ensemble du paquet. Seq indique une demande de synchronisation ou établissement de connexion , Ack lui signale que le paquet est un accusé de réception. TcpLen indique la longueur du paquet.
 ---
 
 
@@ -338,7 +338,7 @@ Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wi
 ---
 
 **Reponse :**  
-
+log tcp any any -> 91.198.174.192 443 (msg:"It's wikipedia"; sid:100000;). Elle est journalisée dans le .log dans /var/log/snort. On ne peut pas voir ce qui a été journalisé car c'est chiffré
 ---
 
 --
@@ -352,7 +352,7 @@ Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping d
 ---
 
 **Reponse :**  
-
+alert icmp !192.168.1.13 any -> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;). Le message est journalisé dans le .log comme d'habitude
 ---
 
 --
@@ -366,7 +366,7 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 ---
 
 **Reponse :**  
-
+alert icmp !192.168.1.13 any <> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;)
 ---
 
 
