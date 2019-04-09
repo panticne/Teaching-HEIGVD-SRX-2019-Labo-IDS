@@ -300,21 +300,21 @@ sudo snort -c myrules.rules -i eth0
 ```
 
 **Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça vaut dire ?**
-Lorsque nous lançons le logiciel nous voyons différentes informations concernant l'initialisation de snort, notamment le nombre de rules à charger, les options de lancement de la commande , sur quel port c'est lancé ainsi que la version de différentes librairie utilisée par snort. 
 ---
 
 **Reponse :**  
+Lorsque nous lançons le logiciel nous voyons différentes informations concernant l'initialisation de snort, notamment le nombre de rules à charger, les options de lancement de la commande , sur quel port c'est lancé ainsi que la version de différentes librairie utilisée par snort. 
 
 ---
 
 Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi dans son text (il faudra chercher un peu pour trouver un site en http...). Ensuite, arrêter Snort avec `CTRL-C`.
 
 **Question 3: Que voyez-vous ?**
-Nous voyons différentes informations sur le site, notamment son hôte, le user-agent, l'encoding, le language, on y voit aussi les cookies et les différentes requêtes du site.
-![Resultat exercice 3](images/3.PNG)
 ---
 
 **Reponse :**  
+Nous voyons différentes informations sur le site, notamment son hôte, le user-agent, l'encoding, le language, on y voit aussi les cookies et les différentes requêtes du site.
+![Resultat exercice 3](images/3.PNG)
 
 ---
 
