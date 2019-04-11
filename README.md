@@ -289,6 +289,7 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:4000015;
 ---
 
 **Reponse :**  
+
 On va écrire l'alerte lorsque nous allons recevoir un paquet TCP venant de n'importe quelle source vers n'importe laquelle de nos destinations contenant le texte : "Rubinstein". Nous allons stocker "Mon nom!". La règle est identifiée par le sid donné dans la commande avec comme version rev : 1.
 ![Resultat exercice 1](images/Ex1.PNG)
 ---
@@ -313,7 +314,9 @@ Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi 
 ---
 
 **Reponse :**  
+
 Nous voyons différentes informations sur le site, notamment son hôte, le user-agent, l'encoding, le language, on y voit aussi les cookies et les différentes requêtes du site.
+
 ![Resultat exercice 3](images/3.PNG)
 
 ---
@@ -321,11 +324,14 @@ Nous voyons différentes informations sur le site, notamment son hôte, le user-
 Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il y ait des alertes pour votre nom.
 
 **Question 4: A quoi ressemble l'alerte ? Qu'est-ce que chaque champ veut dire ?**
-Voir image Question 3
-Elle ressemble à des informations sur un paquet.On a sur la première ligne entre crochet les id:version de notre règle, suivi du message. La priorité du paquet, suivi de la date/heure de l'alerte avec l'adresse IP de l'hôte vers la destination(site web). TCP TTL indique le temps de vie du paquet tcp. TOS indique le type de service. IpLen indique la longueur de l'en-tête IP. DgmLen quant a lui indique la longueur de l'ensemble du paquet. Seq indique une demande de synchronisation ou établissement de connexion , Ack lui signale que le paquet est un accusé de réception. TcpLen indique la longueur du paquet.
+
 ---
 
 **Reponse :**  
+
+Voir image Question 3
+
+Elle ressemble à des informations sur un paquet.On a sur la première ligne entre crochet les id:version de notre règle, suivi du message. La priorité du paquet, suivi de la date/heure de l'alerte avec l'adresse IP de l'hôte vers la destination(site web). TCP TTL indique le temps de vie du paquet tcp. TOS indique le type de service. IpLen indique la longueur de l'en-tête IP. DgmLen quant a lui indique la longueur de l'ensemble du paquet. Seq indique une demande de synchronisation ou établissement de connexion , Ack lui signale que le paquet est un accusé de réception. TcpLen indique la longueur du paquet.
 
 ---
 
@@ -336,11 +342,16 @@ Elle ressemble à des informations sur un paquet.On a sur la première ligne ent
 Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wikipedia est visité **DEPUIS VOTRE** station. **Ne pas utiliser une règle qui détecte un string ou du contenu**.
 
 **Question 5: Quelle est votre règle ? Où le message a-t'il été journalisé ? Qu'est-ce qui a été journalisé ?**
-log tcp any any -> 91.198.174.192 443 (msg:"It's wikipedia"; sid:100000;). Elle est journalisée dans le .log dans /var/log/snort. On ne peut pas voir ce qui a été journalisé car c'est chiffré
-![Resultat exercice 5](images/4.PNG)
+
 ---
 
 **Reponse :**  
+
+
+log tcp any any -> 91.198.174.192 443 (msg:"It's wikipedia"; sid:100000;). Elle est journalisée dans le .log dans /var/log/snort. On ne peut pas voir ce qui a été journalisé car c'est chiffré
+
+
+![Resultat exercice 5](images/4.PNG)
 
 ---
 
@@ -351,12 +362,14 @@ log tcp any any -> 91.198.174.192 443 (msg:"It's wikipedia"; sid:100000;). Elle 
 Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping depuis une autre machine. Assurez-vous que **ça n'alerte pas** quand c'est vous qui envoyez le ping vers un autre système !
 
 **Question 6: Quelle est votre règle ? Comment avez-vous fait pour que ça identifie seulement les pings entrants ? Où le message a-t'il été journalisé ? Qu'est-ce qui a été journalisé ?**
-alert icmp !192.168.1.13 any -> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;rev:1;). Le message est journalisé dans le .log comme d'habitude. J'ai mis un ! devant mon adresse comme ça tout le monde sauf moi peut me notifier
-![Resultat exercice 6](images/5.PNG)
+
 ---
 
 **Reponse :**  
 ---
+
+alert icmp !192.168.1.13 any -> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;rev:1;). Le message est journalisé dans le .log comme d'habitude. J'ai mis un ! devant mon adresse comme ça tout le monde sauf moi peut me notifier
+![Resultat exercice 6](images/5.PNG)
 
 --
 
@@ -365,11 +378,13 @@ alert icmp !192.168.1.13 any -> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;re
 Modifier votre règle pour que les pings soient détectés dans les deux sens.
 
 **Question 7: Qu'est-ce que vous avez modifié pour que la règle détecte maintenant le trafic dans les deux senses ?**
-alert icmp any any <> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;res:1), il faut juste modifier la direction avec <> et dire que lui même peut se ping
-![Resultat exercice 7](images/6.PNG)
+
 ---
 
 **Reponse :**  
+
+alert icmp any any <> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;res:1), il faut juste modifier la direction avec <> et dire que lui même peut se ping
+![Resultat exercice 7](images/6.PNG)
 
 ---
 
@@ -380,10 +395,13 @@ alert icmp any any <> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;res:1), il f
 Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été faite depuis la machine d'un voisin. Si vous avez besoin de plus d'information sur ce qui décrit cette tentative (adresses, ports, protocoles), servez-vous de Wireshark pour analyser les échanges lors de la requête de connexion depuis votre voisi.
 
 **Question 8: Quelle est votre règle ? Montrer la règle et expliquer comment elle fonctionne. Montre le message d'alerte enregistré dans le fichier d'alertes.**
-![Resultat exercice 8](images/7.PNG)
+
 ---
-alert tcp any any -> 192.168.1.13 22 (msg:"Connexion SSH";content:"SSH-2.0"; sid:1000; rev:1;). Lorsque l'on reçoit un paquet sur notre port 22 et que le paquet contient : SSH-2.0 dans son paquet, on va lever une notification
+
 **Reponse :**  
+
+alert tcp any any -> 192.168.1.13 22 (msg:"Connexion SSH";content:"SSH-2.0"; sid:1000; rev:1;). Lorsque l'on reçoit un paquet sur notre port 22 et que le paquet contient : SSH-2.0 dans son paquet, on va lever une notification
+![Resultat exercice 8](images/7.PNG)
 
 ---
 
@@ -410,8 +428,11 @@ Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshar
 ---
 
 **Reponse :**  
----
+
 Il va faire un retour sur les types de paquets rencontrés,etc (avec un fichier.log). Non, il va également relever des alertes si une règle est lancée.
+
+---
+
 ---
 
 <sub>This guide draws heavily on http://cs.mvnu.edu/twiki/bin/view/Main/CisLab82014</sub>
