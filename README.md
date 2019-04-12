@@ -291,6 +291,7 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:4000015;
 **Reponse :**  
 
 On va écrire l'alerte lorsque nous allons recevoir un paquet TCP venant de n'importe quelle source vers n'importe laquelle de nos destinations contenant le texte : "Rubinstein". Nous allons stocker "Mon nom!". La règle est identifiée par le sid donné dans la commande avec comme version rev : 1.
+
 ![Resultat exercice 1](images/Ex1.PNG)
 ---
 
@@ -304,7 +305,9 @@ sudo snort -c myrules.rules -i eth0
 ---
 
 **Reponse :**  
+
 Lorsque nous lançons le logiciel nous voyons différentes informations concernant l'initialisation de snort, notamment le nombre de rules à charger, les options de lancement de la commande , sur quel port c'est lancé ainsi que la version de différentes librairie utilisée par snort. 
+On peut voir le résultat dans le screen de la Question 3
 
 ---
 
@@ -383,10 +386,10 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 
 **Reponse :**  
 
+---
+
 alert icmp any any <> 192.168.1.13 any (msg:"ICMP Packet"; sid:1234;res:1), il faut juste modifier la direction avec <> et dire que lui même peut se ping
 ![Resultat exercice 7](images/6.PNG)
-
----
 
 --
 
@@ -420,10 +423,11 @@ Lancer Wireshark et faire une capture du trafic sur l'interface connectée au br
 ---
 
 Il s'agit de l'option -r
+![Resultat exercice 9](images/9.PNG)
 
 ---
 
-Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshark.
+Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshark ou des logs (comme discuté avec le professeur).
 
 **Question 10: Quelle est le comportement de Snort avec un fichier de capture ? Y-a-t'il une difference par rapport à l'analyse en temps réel ? Est-ce que des alertes sont aussi enregistrées dans le fichier d'alertes?**
 
@@ -431,9 +435,9 @@ Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshar
 
 **Reponse :**  
 
-Il va faire un retour sur les types de paquets rencontrés,etc (avec un fichier.log). Non, il va également relever des alertes si une règle est lancée.
-
 ---
+
+Il va faire un retour sur les types de paquets rencontrés,etc (avec un fichier.log). Non, il va également relever des alertes si une règle est lancée. Et oui elles sont enregistrées dans alert. On peut voir la preuve dans le screen de la question 9
 
 ---
 
